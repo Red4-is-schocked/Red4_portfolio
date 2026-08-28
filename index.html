@@ -142,8 +142,7 @@
     color:var(--ink);
     letter-spacing:-0.01em;
   }
- 
-  /* Hero */
+
   .hero h1{
     font-size:clamp(2.6rem, 7vw, 5rem);
     font-weight:700;
@@ -192,13 +191,11 @@
     100%{top:100%;}
   }
  
-  /* About */
   .about h2{font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:24px;}
   .about p{max-width:60ch; font-size:1.04rem; color:var(--ink-soft);}
   .about p + p{margin-top:16px;}
   .about .highlight{color:var(--ink); font-weight:600;}
  
-  /* Learning / specs */
   .learning h2{font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:36px;}
   .spec-grid{
     display:grid;
@@ -254,7 +251,86 @@
   .btn .arrow{transition:transform 0.2s ease;}
   .btn:hover .arrow{transform:translateX(4px);}
  
-  footer{
+  /* Game */
+  .game h2{font-size:clamp(1.8rem, 4vw, 2.4rem); margin-bottom:10px;}
+  .game > .sheet-inner > p{color:var(--ink-soft); max-width:52ch; margin-bottom:28px;}
+ 
+  .game-frame{
+    border:1.5px solid var(--line-strong);
+    background:var(--panel);
+    padding:16px;
+  }
+ 
+  .game-hud{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:12px;
+  }
+  .game-hud .score{color:var(--ink); font-weight:600;}
+  .game-hud .score .accent{color:var(--accent);}
+ 
+  #gameCanvas{
+    display:block;
+    width:100%;
+    height:auto;
+    background:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:28px 28px;
+    background-color:var(--paper);
+    border:1px solid var(--line);
+    touch-action:none;
+  }
+ 
+  .game-controls{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:14px;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .game-hint{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    color:var(--ink-soft);
+  }
+  .game-btn{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:0.85rem;
+    color:var(--ink);
+    background:transparent;
+    border:1.5px solid var(--ink);
+    border-radius:2px;
+    padding:10px 18px;
+    cursor:pointer;
+    transition:background 0.15s ease, color 0.15s ease;
+  }
+  .game-btn:hover{background:var(--ink); color:var(--paper);}
+  .game-btn:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+ 
+  .touch-controls{
+    display:none;
+    gap:10px;
+  }
+  .touch-controls button{
+    width:52px; height:52px;
+    font-size:1.2rem;
+    border:1.5px solid var(--line-strong);
+    background:var(--panel);
+    color:var(--ink);
+    border-radius:2px;
+  }
+  @media (hover:none) and (pointer:coarse){
+    .touch-controls{display:flex;}
+  }
     position:relative;
     z-index:1;
     font-family:'IBM Plex Mono', monospace;
@@ -290,9 +366,9 @@
     <div class="sheet-inner hero">
       <div class="sheet-marks"><span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span></div>
       <div class="hero-text">
-        <span class="sheet-tag">Sheet 01 / 04 — Profile</span>
+        <span class="sheet-tag">Sheet 01 / 05 — Profile</span>
         <h1>Red4</h1>
-        <p class="role">IT Practicer · <span class="accent">1337 Coding School</span>, Morocco</p>
+        <p class="role">Elite Person · <span class="accent">1337 Coding School</span>, Morocco</p>
         <p class="pitch">Learning to build software from first principles — starting in C, working through the core curriculum one project at a time.</p>
         <div class="scroll-cue"><div class="bar"></div>Scroll</div>
       </div>
@@ -308,7 +384,7 @@
   <section class="sheet" data-sheet>
     <div class="sheet-inner about">
       <div class="sheet-marks"><span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span></div>
-      <span class="sheet-tag">Sheet 02 / 04 — About</span>
+      <span class="sheet-tag">Sheet 02 / 05 — About</span>
       <h2>Building from the ground up</h2>
       <p>I got into <span class="highlight">1337</span>, the 42-network coding school in Morocco, through the Piscine, and I'm now working through the core curriculum in C.</p>
       <p>No frameworks, no shortcuts — just the compiler, the terminal, and a lot of debugging. I'm early in the journey, and every project below is one I've written myself, peer-reviewed and Norm-checked.</p>
@@ -318,7 +394,7 @@
   <section class="sheet" data-sheet>
     <div class="sheet-inner learning">
       <div class="sheet-marks"><span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span></div>
-      <span class="sheet-tag">Sheet 03 / 04 — Currently building</span>
+      <span class="sheet-tag">Sheet 03 / 05 — Currently building</span>
       <h2>What I'm working on</h2>
       <div class="spec-grid">
         <div class="spec-card">
@@ -346,9 +422,35 @@
   </section>
  
   <section class="sheet" data-sheet>
+    <div class="sheet-inner game">
+      <div class="sheet-marks"><span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span></div>
+      <span class="sheet-tag">Sheet 04 / 05 — Play</span>
+      <h2>Segfault Dodger</h2>
+      <p>Steer the pointer. Catch <strong>malloc</strong> blocks, dodge <strong>segfault</strong> blocks. Three hits and it's game over.</p>
+      <div class="game-frame">
+        <div class="game-hud">
+          <span>Score: <span class="score"><span class="accent" id="scoreVal">0</span></span></span>
+          <span>Lives: <span id="livesVal">3</span></span>
+        </div>
+        <canvas id="gameCanvas" width="640" height="360"></canvas>
+        <div class="game-controls">
+          <span class="game-hint" id="gameHint">← → or A / D to move</span>
+          <div style="display:flex; gap:12px; align-items:center;">
+            <div class="touch-controls">
+              <button id="touchLeft" aria-label="Move left">←</button>
+              <button id="touchRight" aria-label="Move right">→</button>
+            </div>
+            <button class="game-btn" id="gameStartBtn">Start</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <section class="sheet" data-sheet>
     <div class="sheet-inner cta">
       <div class="sheet-marks"><span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span></div>
-      <span class="sheet-tag">Sheet 04 / 04 — Work</span>
+      <span class="sheet-tag">Sheet 05 / 05 — Work</span>
       <h2>See the exercises</h2>
       <p>Every project I've submitted at 1337 is pushed to GitHub as I complete it.</p>
       <a class="btn" href="https://github.com/Red4-is-schocked" target="_blank" rel="noopener noreferrer">
@@ -412,5 +514,187 @@
   })();
 </script>
  
+<script>
+  (function(){
+    var canvas = document.getElementById('gameCanvas');
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width, H = canvas.height;
+ 
+    var scoreEl = document.getElementById('scoreVal');
+    var livesEl = document.getElementById('livesVal');
+    var startBtn = document.getElementById('gameStartBtn');
+    var hintEl = document.getElementById('gameHint');
+    var touchLeft = document.getElementById('touchLeft');
+    var touchRight = document.getElementById('touchRight');
+ 
+    var inkStrong = '#10161F';
+    var accent = '#2F5DFF';
+    var danger = '#C43B3B';
+    var soft = '#4A5568';
+ 
+    var player, blocks, score, lives, running, spawnTimer, speedFactor, keys;
+ 
+    function resetGame(){
+      player = { x: W/2 - 24, y: H - 34, w: 48, h: 18, speed: 7 };
+      blocks = [];
+      score = 0;
+      lives = 3;
+      spawnTimer = 0;
+      speedFactor = 1;
+      keys = { left:false, right:false };
+      scoreEl.textContent = score;
+      livesEl.textContent = lives;
+    }
+ 
+    function spawnBlock(){
+      var isBad = Math.random() < 0.42;
+      var w = 64, h = 26;
+      blocks.push({
+        x: Math.random() * (W - w),
+        y: -h,
+        w: w, h: h,
+        vy: 2.2 * speedFactor + Math.random() * 1.4,
+        bad: isBad,
+        label: isBad ? 'segfault' : 'malloc'
+      });
+    }
+ 
+    function rectsOverlap(a, b){
+      return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+    }
+ 
+    function drawGrid(){
+      ctx.clearRect(0, 0, W, H);
+    }
+ 
+    function draw(){
+      drawGrid();
+ 
+      // player pointer
+      ctx.fillStyle = inkStrong;
+      ctx.fillRect(player.x, player.y, player.w, player.h);
+      ctx.fillStyle = '#F1F3F6';
+      ctx.font = '11px "IBM Plex Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('*ptr', player.x + player.w/2, player.y + player.h/2 + 4);
+ 
+      // blocks
+      blocks.forEach(function(b){
+        ctx.fillStyle = b.bad ? danger : accent;
+        ctx.fillRect(b.x, b.y, b.w, b.h);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '11px "IBM Plex Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(b.label, b.x + b.w/2, b.y + b.h/2 + 4);
+      });
+ 
+      if (!running){
+        ctx.fillStyle = 'rgba(16,22,31,0.72)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = '#F1F3F6';
+        ctx.textAlign = 'center';
+        ctx.font = '700 22px "Space Grotesk", sans-serif';
+        ctx.fillText(lives <= 0 ? 'Game over' : 'Segfault Dodger', W/2, H/2 - 10);
+        ctx.font = '13px "IBM Plex Mono", monospace';
+        ctx.fillStyle = soft;
+        ctx.fillText(lives <= 0 ? 'Score: ' + score + ' — press Start to retry' : 'Press Start to play', W/2, H/2 + 16);
+      }
+    }
+ 
+    function step(){
+      if (!running) return;
+ 
+      if (keys.left) player.x -= player.speed;
+      if (keys.right) player.x += player.speed;
+      player.x = Math.max(0, Math.min(W - player.w, player.x));
+ 
+      spawnTimer++;
+      var spawnRate = Math.max(28, 55 - Math.floor(score / 4));
+      if (spawnTimer > spawnRate){
+        spawnTimer = 0;
+        spawnBlock();
+      }
+ 
+      for (var i = blocks.length - 1; i >= 0; i--){
+        var b = blocks[i];
+        b.y += b.vy;
+ 
+        if (rectsOverlap(player, b)){
+          blocks.splice(i, 1);
+          if (b.bad){
+            lives--;
+            livesEl.textContent = lives;
+            if (lives <= 0){
+              running = false;
+              draw();
+              startBtn.textContent = 'Retry';
+              return;
+            }
+          } else {
+            score++;
+            scoreEl.textContent = score;
+            speedFactor = 1 + score * 0.03;
+          }
+          continue;
+        }
+ 
+        if (b.y > H){
+          blocks.splice(i, 1);
+          if (!b.bad){
+            // missed a good block — no penalty, just gone
+          }
+        }
+      }
+ 
+      draw();
+      requestAnimationFrame(step);
+    }
+ 
+    function startGame(){
+      resetGame();
+      running = true;
+      startBtn.textContent = 'Restart';
+      requestAnimationFrame(step);
+    }
+ 
+    startBtn.addEventListener('click', startGame);
+ 
+    window.addEventListener('keydown', function(e){
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = true;
+      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = true;
+    });
+    window.addEventListener('keyup', function(e){
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = false;
+      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = false;
+    });
+ 
+    function bindHold(btn, dir){
+      var press = function(e){ e.preventDefault(); keys[dir] = true; };
+      var release = function(e){ e.preventDefault(); keys[dir] = false; };
+      btn.addEventListener('touchstart', press, { passive:false });
+      btn.addEventListener('touchend', release);
+      btn.addEventListener('mousedown', press);
+      btn.addEventListener('mouseup', release);
+      btn.addEventListener('mouseleave', release);
+    }
+    bindHold(touchLeft, 'left');
+    bindHold(touchRight, 'right');
+ 
+    // drag to move on canvas (mobile)
+    canvas.addEventListener('touchmove', function(e){
+      if (!running) return;
+      e.preventDefault();
+      var rect = canvas.getBoundingClientRect();
+      var scaleX = W / rect.width;
+      var touchX = (e.touches[0].clientX - rect.left) * scaleX;
+      player.x = Math.max(0, Math.min(W - player.w, touchX - player.w/2));
+    }, { passive:false });
+ 
+    resetGame();
+    draw();
+  })();
+</script>
+ 
 </body>
 </html>
+ 
