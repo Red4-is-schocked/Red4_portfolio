@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reda Batal — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F1F3F6;
+    --panel:#FFFFFF;
+    --ink:#10161F;
+    --ink-soft:#4A5568;
+    --accent:#2F5DFF;
+    --accent-soft:#E7ECFF;
+    --line:rgba(16,22,31,0.12);
+    --line-strong:rgba(16,22,31,0.28);
+  }
+ 
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+ 
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+ 
+  /* Faint drafting grid across the whole page */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:64px 64px;
+    opacity:0.35;
+    pointer-events:none;
+    z-index:0;
+  }
+ 
+  .stage{
+    perspective:1800px;
+    position:relative;
+    z-index:1;
+  }
+ 
+  .sheet{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    padding:120px 8vw;
+    transform-style:preserve-3d;
+    will-change:transform, opacity;
+    transform:rotateX(10deg) translateY(70px) translateZ(-40px);
+    opacity:0;
+    transition:transform 0.05s linear, opacity 0.05s linear;
+  }
+ 
+  .sheet-inner{
+    max-width:760px;
+    width:100%;
+    position:relative;
+  }
+ 
+  .hero .sheet-inner{
+    max-width:920px;
+    display:flex;
+    align-items:center;
+    gap:56px;
+  }
+  .hero-text{flex:1 1 auto; min-width:0;}
+  .hero-portrait{
+    flex:0 0 auto;
+    width:220px;
+  }
+  .hero-portrait figure{
+    position:relative;
+    border:1.5px solid var(--line-strong);
+    background:var(--panel);
+    padding:14px 14px 34px;
+  }
+  .hero-portrait img{
+    display:block;
+    width:100%;
+    height:auto;
+    filter:saturate(1.05);
+  }
+  .hero-portrait figcaption{
+    position:absolute;
+    left:14px; bottom:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.62rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+ 
+  @media (max-width:760px){
+    .hero .sheet-inner{flex-direction:column-reverse; text-align:center; gap:34px;}
+    .hero-portrait{width:160px;}
+    .hero-portrait figcaption{left:50%; transform:translateX(-50%);}
+  }
+ 
+  /* Drafting sheet chrome: corner marks + sheet number tab */
+  .sheet-marks span{
+    position:absolute;
+    width:18px; height:18px;
+    border:1.5px solid var(--line-strong);
+  }
+  .sheet-marks .tl{top:-28px; left:-28px; border-right:none; border-bottom:none;}
+  .sheet-marks .tr{top:-28px; right:-28px; border-left:none; border-bottom:none;}
+  .sheet-marks .bl{bottom:-28px; left:-28px; border-right:none; border-top:none;}
+  .sheet-marks .br{bottom:-28px; right:-28px; border-left:none; border-top:none;}
+ 
+  .sheet-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:22px;
+  }
+  .sheet-tag::before{
+    content:"";
+    width:26px; height:1px;
+    background:var(--accent);
+    display:inline-block;
+  }
+ 
+  h1, h2{
+    font-family:'Space Grotesk', sans-serif;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+ 
+  /* Hero */
+  .hero h1{
+    font-size:clamp(2.6rem, 7vw, 5rem);
+    font-weight:700;
+    line-height:1.02;
+  }
+  .hero .role{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:1rem;
+    color:var(--ink-soft);
+    margin-top:18px;
+  }
+  .hero .role .accent{color:var(--accent);}
+  .hero p.pitch{
+    max-width:52ch;
+    font-size:1.08rem;
+    color:var(--ink-soft);
+    margin-top:26px;
+  }
+  .scroll-cue{
+    margin-top:56px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .scroll-cue .bar{
+    width:1px; height:34px;
+    background:var(--line-strong);
+    position:relative;
+    overflow:hidden;
+  }
+  .scroll-cue .bar::after{
+    content:"";
+    position:absolute;
+    top:-100%; left:0; right:0; height:100%;
+    background:var(--accent);
+    animation:travel 1.8s ease-in-out infinite;
+  }
+  @keyframes travel{
+    0%{top:-100%;}
+    50%{top:100%;}
+    100%{top:100%;}
+  }
+ 
+  /* About */
+  .about h2{font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:24px;}
+  .about p{max-width:60ch; font-size:1.04rem; color:var(--ink-soft);}
+  .about p + p{margin-top:16px;}
+  .about .highlight{color:var(--ink); font-weight:600;}
+ 
+  /* Learning / specs */
+  .learning h2{font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:36px;}
+  .spec-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .spec-card{
+    background:var(--panel);
+    padding:26px 24px;
+  }
+  .spec-card .fig{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.7rem;
+    letter-spacing:0.1em;
+    color:var(--accent);
+    display:block;
+    margin-bottom:10px;
+  }
+  .spec-card h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:1.08rem;
+    font-weight:700;
+    margin-bottom:8px;
+  }
+  .spec-card p{
+    font-size:0.92rem;
+    color:var(--ink-soft);
+  }
+ 
+  /* CTA */
+  .cta h2{font-size:clamp(1.8rem, 4vw, 2.4rem); margin-bottom:16px;}
+  .cta p{color:var(--ink-soft); max-width:50ch; margin-bottom:34px;}
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:1rem;
+    color:#F1F3F6;
+    background:var(--ink);
+    border:none;
+    border-radius:2px;
+    padding:18px 28px;
+    text-decoration:none;
+    position:relative;
+    transition:transform 0.2s ease, background 0.2s ease;
+  }
+  .btn:hover{background:var(--accent); transform:translateY(-3px);}
+  .btn:focus-visible{outline:2px solid var(--accent); outline-offset:4px;}
+  .btn .arrow{transition:transform 0.2s ease;}
+  .btn:hover .arrow{transform:translateX(4px);}
+ 
+  footer{
+    position:relative;
+    z-index:1;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.75rem;
+    color:var(--ink-soft);
+    text-align:center;
+    padding:40px 24px 60px;
+    border-top:1px solid var(--line);
+  }
+ 
+  @media (max-width:640px){
+    .sheet{padding:100px 7vw;}
+    .spec-grid{grid-template-columns:1fr;}
+    .sheet-marks span{display:none;}
+  }
+ 
+  @media (prefers-reduced-motion: reduce){
+    .sheet{
+      transform:none !important;
+      opacity:1 !important;
+      transition:none;
+    }
+    html{scroll-behavior:auto;}
+    .scroll-cue .bar::after{animation:none; top:0;}
+  }
+</style>
+</head>
+<body>
+ 
+<div class="stage">
+ 
+  <section class="sheet" data-sheet>
+    <div class="sheet-inner hero">
+      <div class="sheet-marks"><span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span></div>
+      <div class="hero-text">
+        <span class="sheet-tag">Sheet 01 / 04 — Profile</span>
+        <h1>Reda Batal</h1>
+        <p class="role">Trainee Software Engineer · <span class="accent">1337 Coding School</span>, Morocco</p>
+        <p class="pitch">Learning to build software from first principles — starting in C, working through the core curriculum one project at a time.</p>
+        <div class="scroll-cue"><div class="bar"></div>Scroll</div>
+      </div>
+      <div class="hero-portrait">
+        <figure>
+          <img src="Gamer Cat Meme.jpg" alt="Illustrated gamer cat wearing a hoodie and headphones, with a laptop and keyboard">
+          <figcaption>Fig. 00 — Operator</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+ 
+  <section class="sheet" data-sheet>
+    <div class="sheet-inner about">
+      <div class="sheet-marks"><span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span></div>
+      <span class="sheet-tag">Sheet 02 / 04 — About</span>
+      <h2>Building from the ground up</h2>
+      <p>I got into <span class="highlight">1337</span>, the 42-network coding school in Morocco, through the Piscine, and I'm now working through the core curriculum in C.</p>
+      <p>No frameworks, no shortcuts — just the compiler, the terminal, and a lot of debugging. I'm early in the journey, and every project below is one I've written myself, peer-reviewed and Norm-checked.</p>
+    </div>
+  </section>
+ 
+  <section class="sheet" data-sheet>
+    <div class="sheet-inner learning">
+      <div class="sheet-marks"><span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span></div>
+      <span class="sheet-tag">Sheet 03 / 04 — Currently building</span>
+      <h2>What I'm working on</h2>
+      <div class="spec-grid">
+        <div class="spec-card">
+          <span class="fig">Fig. A</span>
+          <h3>Memory & Pointers</h3>
+          <p>Manual memory management with malloc/free, and writing code that doesn't segfault.</p>
+        </div>
+        <div class="spec-card">
+          <span class="fig">Fig. B</span>
+          <h3>Libft</h3>
+          <p>Rebuilding core C standard library functions from scratch.</p>
+        </div>
+        <div class="spec-card">
+          <span class="fig">Fig. C</span>
+          <h3>The Norm</h3>
+          <p>Writing clean C to 1337's strict coding standard.</p>
+        </div>
+        <div class="spec-card">
+          <span class="fig">Fig. D</span>
+          <h3>Unix Fundamentals</h3>
+          <p>Living in the shell, understanding processes, files, and permissions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <section class="sheet" data-sheet>
+    <div class="sheet-inner cta">
+      <div class="sheet-marks"><span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span></div>
+      <span class="sheet-tag">Sheet 04 / 04 — Work</span>
+      <h2>See the exercises</h2>
+      <p>Every project I've submitted at 1337 is pushed to GitHub as I complete it.</p>
+      <a class="btn" href="https://github.com/Red4-is-schocked" target="_blank" rel="noopener noreferrer">
+        <span class="arrow">→</span> View my GitHub profile
+      </a>
+    </div>
+  </section>
+ 
+</div>
+ 
+<footer>Reda Batal · 1337 Coding School · Rabat, Morocco</footer>
+ 
+<script>
+  (function(){
+    var sheets = Array.prototype.slice.call(document.querySelectorAll('[data-sheet]'));
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ 
+    if (reduceMotion) {
+      sheets.forEach(function(s){ s.style.transform = 'none'; s.style.opacity = '1'; });
+      return;
+    }
+ 
+    var ticking = false;
+ 
+    function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+ 
+    function update(){
+      var vh = window.innerHeight;
+      var vCenter = vh / 2;
+ 
+      sheets.forEach(function(sheet){
+        var rect = sheet.getBoundingClientRect();
+        var sheetCenter = rect.top + rect.height / 2;
+        var distance = sheetCenter - vCenter;
+        // progress: 0 when centered, -1 above viewport-center range, +1 below
+        var progress = clamp(distance / (vh * 0.75), -1, 1);
+ 
+        var rotateX = progress * 12;          // tilt in/out
+        var translateY = progress * 90;       // slide
+        var translateZ = -Math.abs(progress) * 120; // recede when off-center
+        var opacity = 1 - Math.abs(progress) * 0.85;
+ 
+        sheet.style.transform =
+          'rotateX(' + rotateX + 'deg) translateY(' + translateY + 'px) translateZ(' + translateZ + 'px)';
+        sheet.style.opacity = clamp(opacity, 0.05, 1);
+      });
+ 
+      ticking = false;
+    }
+ 
+    function onScroll(){
+      if (!ticking){
+        window.requestAnimationFrame(update);
+        ticking = true;
+      }
+    }
+ 
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+  })();
+</script>
+ 
+</body>
+</html>
